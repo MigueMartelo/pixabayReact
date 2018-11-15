@@ -41,6 +41,9 @@ class App extends Component {
     // actualizar el state
     this.setState({
       pagina
+    }, () => {
+      this.consultarAPI();
+      this.scroll();
     });
   }
   paginaSiguiente = () => {    
@@ -51,7 +54,15 @@ class App extends Component {
     // Actualizar el state
     this.setState({
       pagina
+    }, () => {
+      this.consultarAPI();
+      this.scroll();
     });
+  }
+
+  scroll = () => {
+    const elemento = document.querySelector('#resultado');
+    elemento.scrollIntoView('auto', 'start');
   }
 
   render() {
