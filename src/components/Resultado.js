@@ -22,6 +22,7 @@ class Resultado extends Component {
                 <Navegacion 
                     paginaAnterior={this.props.paginaAnterior}
                     paginaSiguiente={this.props.paginaSiguiente}
+                    totalPaginas={this.props.totalPaginas}
                 />
             </React.Fragment>
         )

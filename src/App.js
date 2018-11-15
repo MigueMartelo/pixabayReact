@@ -8,7 +8,8 @@ class App extends Component {
     termino: '',
     imagenes: [],
     pagina: '',
-    cargando: false
+    cargando: false,
+    totalPaginas: ''
   }
 
   consultarAPI = async () => {
@@ -24,13 +25,14 @@ class App extends Component {
         });
         return res.json();
       })
-      .then( result => {
+      .then( result => {        
         setTimeout(() => {
           this.setState({
             imagenes: result.hits,
-            cargando: false
+            cargando: false,
+            totalPaginas: Math.ceil(result.totalHits / 50)
           });
-        }, 2000);
+        }, 500);
       })
       .catch( err => console.log(err) );
   }
@@ -90,6 +92,7 @@ class App extends Component {
                     imagenes={this.state.imagenes}
                     paginaAnterior={this.paginaAnterior}
                     paginaSiguiente={this.paginaSiguiente}
+                    totalPaginas={this.state.totalPaginas}
                   />
     }
 
