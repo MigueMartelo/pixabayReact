@@ -13,7 +13,7 @@ class App extends Component {
 
     const apiKey = '1729117-1b6030ad5cc42d11efde44e52',
           {termino} = this.state,
-          url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es`;
+          url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es&per_page=50`;
 
     fetch(url)
       .then( res => res.json() )
