@@ -6,14 +6,15 @@ class App extends Component {
 
   state = {
     termino: '',
-    imagenes: []
+    imagenes: [],
+    pagina: ''
   }
 
   consultarAPI = () => {
 
     const apiKey = '1729117-1b6030ad5cc42d11efde44e52',
-          {termino} = this.state,
-          url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es&per_page=50`;
+          {termino, pagina} = this.state,
+          url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es&per_page=50&page=${pagina}`;
 
     fetch(url)
       .then( res => res.json() )
@@ -23,9 +24,33 @@ class App extends Component {
 
   datosBusqueda = (termino) => {
     this.setState({
-      termino
+      termino,
+      pagina: 1
     }, () => {
       this.consultarAPI();
+    });
+  }
+
+  paginaAnterior = () => {
+    // Leer state
+    let pagina = this.state.pagina;
+    // Si la página es = 1 no podemos retroceder
+    if(pagina === 1) return null;
+    // restar a la página actual 1
+    pagina -=1;
+    // actualizar el state
+    this.setState({
+      pagina
+    });
+  }
+  paginaSiguiente = () => {    
+    // Leer state
+    let pagina = this.state.pagina;
+    // Sumar a la página actual 1
+    pagina +=1;
+    // Actualizar el state
+    this.setState({
+      pagina
     });
   }
 
@@ -39,6 +64,8 @@ class App extends Component {
         <div className="row justify-content-center">
           <Resultado
             imagenes={this.state.imagenes}
+            paginaAnterior={this.paginaAnterior}
+            paginaSiguiente={this.paginaSiguiente}
           />
         </div>
       </div>

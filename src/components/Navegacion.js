@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Navegacion = () => {
+const Navegacion = (props) => {
     return ( 
         <div className="py-5">
-            <button className="btn btn-info mr-1">&larr; Anterior </button>
-            <button className="btn btn-info ">Siguiente &rarr;</button>
+            <button onClick={props.paginaAnterior} className="btn btn-info mr-1">&larr; Anterior </button>
+            <button onClick={props.paginaSiguiente} className="btn btn-info ">Siguiente &rarr;</button>
         </div>
     );
 }
