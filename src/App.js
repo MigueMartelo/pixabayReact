@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Buscador from './components/Buscador';
 
 class App extends Component {
+
+  state = {
+    termino: '',
+    imagenes: []
+  }
+
+  consultarAPI = () => {
+
+    const apiKey = '1729117-1b6030ad5cc42d11efde44e52',
+          {termino} = this.state,
+          url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es`;
+
+    fetch(url)
+      .then( res => res.json() )
+      .then( result => this.setState({imagenes: result.hits}) )
+      .catch( err => console.log(err) );
+  }
+
+  datosBusqueda = (termino) => {
+    this.setState({
+      termino
+    }, () => {
+      this.consultarAPI();
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="app container">
+        <div className="jumbotron">
+          <p className="lead text-center">Buscador de Imágenes</p>
+          <Buscador datosBusqueda={this.datosBusqueda} />
+        </div>
+        
       </div>
     );
   }
