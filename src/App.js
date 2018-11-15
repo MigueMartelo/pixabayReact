@@ -7,18 +7,31 @@ class App extends Component {
   state = {
     termino: '',
     imagenes: [],
-    pagina: ''
+    pagina: '',
+    cargando: false
   }
 
-  consultarAPI = () => {
+  consultarAPI = async () => {
 
     const apiKey = '1729117-1b6030ad5cc42d11efde44e52',
           {termino, pagina} = this.state,
           url = `https://pixabay.com/api/?key=${apiKey}&q=${termino}&lang=es&per_page=50&page=${pagina}`;
 
-    fetch(url)
-      .then( res => res.json() )
-      .then( result => this.setState({imagenes: result.hits}) )
+    await fetch(url)
+      .then( res => {
+        this.setState({
+          cargando: true
+        });
+        return res.json();
+      })
+      .then( result => {
+        setTimeout(() => {
+          this.setState({
+            imagenes: result.hits,
+            cargando: false
+          });
+        }, 2000);
+      })
       .catch( err => console.log(err) );
   }
 
@@ -66,6 +79,20 @@ class App extends Component {
   }
 
   render() {
+
+    const cargando = this.state.cargando;
+    let resultado;
+
+    if(cargando) {
+      resultado = <div>Cargando...</div>
+    } else {
+      resultado = <Resultado
+                    imagenes={this.state.imagenes}
+                    paginaAnterior={this.paginaAnterior}
+                    paginaSiguiente={this.paginaSiguiente}
+                  />
+    }
+
     return (
       <div className="app container">
         <div className="jumbotron">
@@ -73,11 +100,7 @@ class App extends Component {
           <Buscador datosBusqueda={this.datosBusqueda} />
         </div>
         <div className="row justify-content-center">
-          <Resultado
-            imagenes={this.state.imagenes}
-            paginaAnterior={this.paginaAnterior}
-            paginaSiguiente={this.paginaSiguiente}
-          />
+          {resultado}
         </div>
       </div>
     );
