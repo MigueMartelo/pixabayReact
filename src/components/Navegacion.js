@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Navegacion = (props) => {
+class Navegacion extends Component {
 
-    if(props.totalPaginas === 1) return null;
+    mostrarAnterior = () => {
+        const {pagina} = this.props;
 
-    return ( 
-        <div className="py-5">
-            <button onClick={props.paginaAnterior} className="btn btn-info mr-1">&larr; Anterior </button>
-            <button onClick={props.paginaSiguiente} className="btn btn-info ">Siguiente &rarr;</button>
-        </div>
-    );
+        if(pagina === 1 ) return null;
+
+        return (
+            <button onClick={this.props.paginaAnterior} className="btn btn-info mr-1">&larr; Anterior </button>
+        )
+    }
+
+    mostrarSiguiente = () => {
+        const {pagina, totalPaginas} = this.props;
+
+        if(pagina === totalPaginas ) return null;
+
+        return (
+            <button onClick={this.props.paginaSiguiente} className="btn btn-info ">Siguiente &rarr;</button>
+        )
+    }
+
+    render() {
+        return (
+            <div className="py-5">
+                { this.mostrarAnterior() }
+                { this.mostrarSiguiente() }
+            </div>
+        );
+    }
 }
- 
+
 export default Navegacion;
